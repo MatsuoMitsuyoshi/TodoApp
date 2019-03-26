@@ -7,29 +7,37 @@ import {
   Platform,
   ScrollView,
   FlatList,
-  TextInput,
-  Button,
   KeyboardAvoidingView,
   AsyncStorage,
   TouchableOpacity,
 } from 'react-native';
 
 import {
-  SearchBar
-} from 'react-native-elements'
+  SearchBar,
+  Input,
+  Button,
+  ListItem,
+} from 'react-native-elements';
+
+import Icon from 'react-native-vector-icons/Feather';
+import Icon2 from 'react-native-vector-icons/MaterialIcons';
 
 const STATUSBAR_HEIGHT = Platform.OS == 'ios' ? 20 : StatusBar.currentHeight;
 const TODO = "@todoapp.todo"
 
 // 2: TODOアイテムの Functional Component
 const TodoItem = (props) => {
-  let textStyle = styles.todoItem
+  let icon = null
   if (props.done === true) {
-    textStyle = styles.todoItemDone
+    icon = <Icon2 name="done" />
   }
   return (
     <TouchableOpacity onPress={props.onTapTodoItem}>
-      <Text style={textStyle}>{props.title}</Text>
+      <ListItem
+        title={props.title}
+        rightIcon={icon}
+        bottomDivider
+      />
     </TouchableOpacity>
   )
 }
@@ -133,16 +141,22 @@ export default class App extends React.Component {
           />
         </ScrollView>
         <View style={styles.input}>
-          <TextInput
+          <Input
             onChangeText={(text) => this.setState({inputText: text})}
             value={this.state.inputText}
             style={styles.inputText}
           />
           <Button
+            icon={
+              <Icon
+                name='plus'
+                size={30}
+                color='white'
+              />
+            }
+            title=""
             onPress={this.onAddItem}
-            title="Add"
-            color="#841584"
-            style={styles.inputButton}
+            buttonStyle={styles.inputButton}
           />
         </View>
       </KeyboardAvoidingView>
@@ -153,32 +167,41 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffd1e8',
     paddingTop: STATUSBAR_HEIGHT,
   },
   filter: {
     height: 70,
+    backgroundColor: '#bcddff',
   },
   todolist: {
     flex: 1
   },
   input: {
-    height: 30,
+    height: 50,
     flexDirection: 'row',
+    paddingRight: 60,
   },
   inputText: {
+    paddingLeft: 10,
+    paddingRight: 10,
     flex: 1,
   },
   inputButton: {
-    width: 100,
+    width: 48,
+    height: 48,
+    borderWidth: 0,
+    borderColor: 'transparent',
+    borderRadius: 48,
+    backgroundColor: '#ff6347',
   },
   // 5: TODO表示用のスタイル
   todoItem: {
     fontSize: 20,
-    backgroundColor: "white",
+    backgroundColor: "#ffd1e8",
   },
   todoItemDone: {
     fontSize: 20,
-    backgroundColor: "red",
+    backgroundColor: "#ff1493",
   },
 });
