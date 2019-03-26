@@ -11,9 +11,12 @@ import {
   Button,
   KeyboardAvoidingView,
   AsyncStorage,
-  // 1: TouchableOpacityを追加
   TouchableOpacity,
 } from 'react-native';
+
+import {
+  SearchBar
+} from 'react-native-elements'
 
 const STATUSBAR_HEIGHT = Platform.OS == 'ios' ? 20 : StatusBar.currentHeight;
 const TODO = "@todoapp.todo"
@@ -101,13 +104,17 @@ export default class App extends React.Component {
     if (filterText !== "") {
       todo = todo.filter(t => t.title.includes(filterText))
     }
+    // SearchBarのPlatformを決定
+    const platform = Platform.OS == 'ios' ? 'ios' : 'android'
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={styles.filter}>
-          <TextInput
+          <SearchBar
+            platform={platform}
+            cancelButtonTitle="cancel"
             onChangeText={(text) => this.setState({filterText: text})}
+            onClear={() => this.setState({filterText: ""})}
             value={this.state.filterText}
-            style={styles.inputText}
             placeholder="Type filter text"
           />
         </View>
@@ -150,7 +157,7 @@ const styles = StyleSheet.create({
     paddingTop: STATUSBAR_HEIGHT,
   },
   filter: {
-    height: 30,
+    height: 70,
   },
   todolist: {
     flex: 1
